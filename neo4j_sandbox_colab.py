@@ -300,7 +300,7 @@ if __name__ == "__main__":
         print("   2. Profile (top-right) → Account Details → API Credentials → Create")
         print("   3. Save the Client ID and Client Secret")
     else:
-        connection_info = provision_neo4j(cid, csecret)
+        connection_info = provision_neo4j(cid, csecret, wait=False)
 
         # ── Quick connectivity test (uncomment to use) ──
         # from neo4j import GraphDatabase
