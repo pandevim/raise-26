@@ -107,8 +107,8 @@ def create_instance(
     token: str,
     project_id: str,
     name: str = "colab-graph",
-    region: str = "us-east-1",
-    cloud_provider: str = "aws",
+    region: str = "us-east1",
+    cloud_provider: str = "gcp",
 ) -> dict:
     """
     Create a free-tier AuraDB instance.
