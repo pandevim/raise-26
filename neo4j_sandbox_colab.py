@@ -214,8 +214,8 @@ def provision_neo4j(
     client_id: str,
     client_secret: str,
     instance_name: str = "colab-graph",
-    region: str = "us-east-1",
-    cloud_provider: str = "aws",
+    region: str = "us-east1",
+    cloud_provider: str = "gcp",
 ) -> dict:
     """
     Full provisioning flow. Returns dict with:
