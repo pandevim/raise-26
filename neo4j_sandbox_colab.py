@@ -236,11 +236,29 @@ def provision_neo4j(
     # 2. Get project
     project_id = get_project_id(token)
 
-    # 3. Show existing instances
+    # 3. Check for existing instances
+    existing_instances = list_instances(token, project_id)
     list_instances(token, project_id)
     print()
 
-    # 4. Create instance
+    # Check if our target instance already exists
+    for inst in existing_instances:
+        if inst.get("name") == instance_name:
+            print(f"♻️ Found existing instance '{instance_name}'. Reusing it.")
+            
+            # Ensure it is in a running state before returning
+            wait_for_running(token, inst["id"])
+            
+            bolt_url = inst.get("connection_url", "")
+            return {
+                "bolt_url": bolt_url,
+                "username": "neo4j",
+                "password": "<SEE_WARNING_BELOW>", # The API cannot retrieve existing passwords
+                "instance_id": inst["id"],
+                "token": token,
+            }
+
+    # 4. If not found, create instance
     instance = create_instance(token, project_id, instance_name, region, cloud_provider)
 
     # 5. Wait for it to spin up
@@ -288,6 +306,7 @@ if __name__ == "__main__":
 
     cid = os.environ.get("NEO4J_CLIENT_ID", "")
     csecret = os.environ.get("NEO4J_CLIENT_SECRET", "")
+    inst_name = os.environ.get("INSTANCE_NAME", "graph")
 
     if not cid or not csecret:
         print("ℹ️  No credentials found. Set them like this:\n")
@@ -300,7 +319,7 @@ if __name__ == "__main__":
         print("   2. Profile (top-right) → Account Details → API Credentials → Create")
         print("   3. Save the Client ID and Client Secret")
     else:
-        connection_info = provision_neo4j(cid, csecret)
+        connection_info = provision_neo4j(cid, csecret, instance_name=inst_name)
 
         # ── Quick connectivity test (uncomment to use) ──
         # from neo4j import GraphDatabase
