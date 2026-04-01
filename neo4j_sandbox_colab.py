@@ -107,7 +107,7 @@ def create_instance(
     token: str,
     project_id: str,
     name: str = "colab-graph",
-    region: str = "us-east1",
+    region: str = "us-central1",
     cloud_provider: str = "gcp",
 ) -> dict:
     """
@@ -214,7 +214,7 @@ def provision_neo4j(
     client_id: str,
     client_secret: str,
     instance_name: str = "colab-graph",
-    region: str = "us-east1",
+    region: str = "us-central1",
     cloud_provider: str = "gcp",
 ) -> dict:
     """
